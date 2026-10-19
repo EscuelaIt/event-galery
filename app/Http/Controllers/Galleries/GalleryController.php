@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Galleries;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\GalleryResource;
 use App\Models\Gallery;
 

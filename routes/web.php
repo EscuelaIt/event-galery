@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\Galleries\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
