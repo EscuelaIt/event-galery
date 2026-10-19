@@ -4,13 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\GalleryResource;
 use App\Models\Gallery;
-use App\Services\ListServices\GalleryListService;
-use EscuelaIT\APIKit\ResourceListable;
 
 class GalleryController extends Controller
 {
-    use ResourceListable;
-
     /**
      * Display a listing of the user's galleries.
      */
@@ -23,13 +19,5 @@ class GalleryController extends Controller
         return inertia('Gallery', [
             'galleries' => GalleryResource::collection($galleries)->resolve(),
         ]);
-    }
-
-    /**
-     * List user galleries with API Kit.
-     */
-    public function listGalleries(GalleryListService $service)
-    {
-        return $this->list($service);
     }
 }
