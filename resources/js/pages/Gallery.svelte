@@ -89,6 +89,7 @@
                                     class="flex-1 rounded border border-input bg-background px-3 py-2 text-center text-sm font-medium transition-colors hover:bg-accent"
                                 >
                                     Edit
+                                    
                                 </Link>
                             </div>
                         </div>
