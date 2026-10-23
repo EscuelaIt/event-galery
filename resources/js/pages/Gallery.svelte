@@ -14,7 +14,7 @@
 <script lang="ts">
     import AppHead from '@/components/AppHead.svelte';
     import Heading from '@/components/Heading.svelte';
-    import '@/components/galleries/gallery-list';
+    import '@/components/galleries/gfe-gallery-list';
     import { router } from '@inertiajs/svelte';
 
     type GalleryEvent = CustomEvent<{ id: string }>;
@@ -40,9 +40,9 @@
             description="Manage your photo galleries"
         />
 
-        <gallery-list
+        <gfe-gallery-list
             ongallery-view={viewGallery}
             ongallery-edit={editGallery}
-        ></gallery-list>
+        ></gfe-gallery-list>
     </div>
 </div>

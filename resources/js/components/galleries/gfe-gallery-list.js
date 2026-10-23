@@ -1,37 +1,18 @@
 import { LitElement, css, html } from 'lit';
-import type { AxiosInstance } from 'axios';
 import '@dile/ui/components/card/card.js';
 import '@dile/ui/components/button/button.js';
 import '@dile/ui/components/spinner/spinner.js';
 import '@dile/ui/components/info-box/info-box.js';
 import { list } from '@/routes/galleries';
 
-declare global {
-    interface Window {
-        axios: AxiosInstance;
-    }
-
-    interface HTMLElementTagNameMap {
-        'gallery-list': GalleryList;
-    }
-}
-
-type GalleryListItem = {
-    uuid: string;
-    name: string;
-    location: string | null;
-    event_date: string;
-    expires_at: string | null;
-};
-
-type GalleryListResponse = {
-    data: {
-        countItems: number;
-        result: {
-            data: GalleryListItem[];
-        };
-    };
-};
+/**
+ * @typedef {Object} GalleryListItem
+ * @property {string} uuid
+ * @property {string} name
+ * @property {string|null} location
+ * @property {string} event_date
+ * @property {string|null} expires_at
+ */
 
 /**
  * Lists the authenticated user's galleries, loading them from the API.
@@ -39,7 +20,7 @@ type GalleryListResponse = {
  * @fires gallery-view - Detail: `{ id: string }` with the gallery UUID.
  * @fires gallery-edit - Detail: `{ id: string }` with the gallery UUID.
  */
-export class GalleryList extends LitElement {
+export class GfeGalleryList extends LitElement {
     static styles = css`
         :host {
             display: block;
@@ -125,30 +106,26 @@ export class GalleryList extends LitElement {
         errorMessage: { state: true },
     };
 
-    declare galleries: GalleryListItem[];
-    declare loading: boolean;
-    declare errorMessage: string | null;
-
     constructor() {
         super();
+        /** @type {GalleryListItem[]} */
         this.galleries = [];
         this.loading = true;
+        /** @type {string|null} */
         this.errorMessage = null;
     }
 
-    connectedCallback(): void {
+    connectedCallback() {
         super.connectedCallback();
-        void this.loadGalleries();
+        this.loadGalleries();
     }
 
-    async loadGalleries(): Promise<void> {
+    async loadGalleries() {
         this.loading = true;
         this.errorMessage = null;
 
         try {
-            const response = await window.axios.get<GalleryListResponse>(
-                list.url(),
-            );
+            const response = await window.axios.get(list.url());
             this.galleries = response.data.data.result.data;
         } catch {
             this.errorMessage = 'The galleries could not be loaded.';
@@ -182,7 +159,10 @@ export class GalleryList extends LitElement {
         </div>`;
     }
 
-    galleryTemplate(gallery: GalleryListItem) {
+    /**
+     * @param {GalleryListItem} gallery
+     */
+    galleryTemplate(gallery) {
         return html`<dile-card title=${gallery.name} titleLevel="3">
             ${gallery.location
                 ? html`<p class="location">${gallery.location}</p>`
@@ -215,7 +195,11 @@ export class GalleryList extends LitElement {
         </dile-card>`;
     }
 
-    formatDate(date: string): string {
+    /**
+     * @param {string} date
+     * @returns {string}
+     */
+    formatDate(date) {
         return new Date(date).toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
@@ -223,7 +207,11 @@ export class GalleryList extends LitElement {
         });
     }
 
-    dispatchGalleryEvent(eventName: string, gallery: GalleryListItem): void {
+    /**
+     * @param {'gallery-view'|'gallery-edit'} eventName
+     * @param {GalleryListItem} gallery
+     */
+    dispatchGalleryEvent(eventName, gallery) {
         this.dispatchEvent(
             new CustomEvent(eventName, {
                 bubbles: true,
@@ -234,6 +222,6 @@ export class GalleryList extends LitElement {
     }
 }
 
-if (!customElements.get('gallery-list')) {
-    customElements.define('gallery-list', GalleryList);
+if (!customElements.get('gfe-gallery-list')) {
+    customElements.define('gfe-gallery-list', GfeGalleryList);
 }
