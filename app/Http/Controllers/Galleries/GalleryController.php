@@ -3,22 +3,15 @@
 namespace App\Http\Controllers\Galleries;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\GalleryResource;
-use App\Models\Gallery;
+use Inertia\Response;
 
 class GalleryController extends Controller
 {
     /**
-     * Display a listing of the user's galleries.
+     * Display the gallery page. The listing is loaded by the frontend from the API.
      */
-    public function index()
+    public function index(): Response
     {
-        $galleries = Gallery::where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return inertia('Gallery', [
-            'galleries' => GalleryResource::collection($galleries)->resolve(),
-        ]);
+        return inertia('Gallery');
     }
 }

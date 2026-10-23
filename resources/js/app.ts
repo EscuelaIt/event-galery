@@ -4,6 +4,7 @@ import AuthLayout from '@/layouts/AuthLayout.svelte';
 import SettingsLayout from '@/layouts/settings/Layout.svelte';
 import { initializeFlashToast } from '@/lib/flash-toast';
 import { initializeTheme } from '@/lib/theme.svelte';
+import './bootstrap';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

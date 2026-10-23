@@ -95,3 +95,15 @@ test('unauthenticated user cannot list galleries', function () {
 
     $response->assertStatus(401);
 });
+
+test('user can list galleries using a sanctum api token', function () {
+    $user = User::factory()->create();
+    Gallery::factory()->count(2)->create(['user_id' => $user->id]);
+    $token = $user->createToken('test-token')->plainTextToken;
+
+    $response = $this->withToken($token)
+        ->getJson(route('galleries.list'));
+
+    $response->assertStatus(200);
+    expect($response->json('data.countItems'))->toBe(2);
+});
